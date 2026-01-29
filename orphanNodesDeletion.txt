@@ -1,0 +1,17 @@
+    def query = buildQuery()
+    def result = query.execute()
+    int count = 0;
+   result.nodes.each { node ->
+   String nodePath = node.path;
+    println "node deleted:: " + nodePath;
+    count++;
+    node.remove();
+    session.save();
+    }
+    println "node:: " + count;
+   
+def buildQuery() {
+        def queryManager = session.workspace.queryManager;
+       def statement = "select * from nt:base where jcr:path like '/content/eon-de-zwei/%' and [sling:resourceType] is null and contains(*, 'gridcontrol*')";
+        queryManager.createQuery(statement, 'sql');
+    }
